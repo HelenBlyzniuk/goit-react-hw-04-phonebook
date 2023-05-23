@@ -7,23 +7,23 @@ import {
   FormButton,
 } from './ContactForm.styled.jsx';
 
-export function ContactForm(addNumber) {
+export function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    const { name, value } = e.currentTarget;
-    setName({
-      [name]: value,
-    });
-    setNumber({
-      [name]: value,
-    });
+    const { value } = e.currentTarget;
+    if (e.currentTarget.name === 'name') {
+      setName(value);
+    }
+    if (e.currentTarget.name === 'number') {
+      setNumber(value);
+    }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    addNumber([name, number]);
+    onSubmit({ name, number });
     onFormReset();
   };
 
@@ -66,5 +66,5 @@ export function ContactForm(addNumber) {
 }
 
 ContactForm.propTypes = {
-  addNumber: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };

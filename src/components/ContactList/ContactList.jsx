@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { ListContainer, ListItem, ListButton } from './ContactList.styled.jsx';
 
-export function ContactList(contacts, getId) {
+export function ContactList({ contacts, getId }) {
   const handleClick = e => {
     getId(e.currentTarget.id);
   };
