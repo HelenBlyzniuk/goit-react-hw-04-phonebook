@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   FormContainer,
@@ -7,67 +7,64 @@ import {
   FormButton,
 } from './ContactForm.styled.jsx';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export function ContactForm(addNumber) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.currentTarget;
-
-    this.setState({
+    setName({
+      [name]: value,
+    });
+    setNumber({
       [name]: value,
     });
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.onFormReset();
+    addNumber([name, number]);
+    onFormReset();
   };
 
-  onFormReset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
+  const onFormReset = () => {
+    setName('');
+    setNumber('');
   };
-  render() {
-    return (
-      <FormContainer onSubmit={this.handleSubmit}>
-        <FormLabel>
-          Name
-          <FormInput
-            type="text"
-            name="name"
-            placeholder="...name"
-            onChange={this.handleChange}
-            value={this.state.name}
-            required
-          />
-        </FormLabel>
-        <FormLabel>
-          Number
-          <FormInput
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            placeholder="...number"
-            onChange={this.handleChange}
-            value={this.state.number}
-          />
-        </FormLabel>
-        <FormButton type="submit" onSubmit={this.handleSubmit}>
-          Add contact
-        </FormButton>
-      </FormContainer>
-    );
-  }
+
+  return (
+    <FormContainer onSubmit={handleSubmit}>
+      <FormLabel>
+        Name
+        <FormInput
+          type="text"
+          name="name"
+          placeholder="...name"
+          onChange={handleChange}
+          value={name}
+          required
+        />
+      </FormLabel>
+      <FormLabel>
+        Number
+        <FormInput
+          type="tel"
+          name="number"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+          placeholder="...number"
+          onChange={handleChange}
+          value={number}
+        />
+      </FormLabel>
+      <FormButton type="submit" onSubmit={handleSubmit}>
+        Add contact
+      </FormButton>
+    </FormContainer>
+  );
 }
 
 ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  addNumber: PropTypes.func.isRequired,
 };
